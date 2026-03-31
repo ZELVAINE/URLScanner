@@ -41,7 +41,7 @@ URLScanner analyzes the current page URL and checks for things like:
 
 It then returns:
 
--   A **risk score (0--100)**
+-   A **risk score (0-100)**
 -   A **risk level (Low / Medium / High)**
 -   A list of **specific findings**
 -   A short **summary of what the score means**
