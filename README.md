@@ -91,11 +91,11 @@ The goal is **awareness**, not full protection.
 
 ## Setup
 
-1.  Clone or download this repository\
-2.  Open Firefox\
-3.  Go to `about:debugging`\
-4.  Click **This Firefox**\
-5.  Click **Load Temporary Add-on**\
+1.  Clone or download this repository
+2.  Open Firefox
+3.  Go to `about:debugging`
+4.  Click **This Firefox**
+5.  Click **Load Temporary Add-on**
 6.  Select the `manifest.json` file
 
 Then open any website and click the extension icon.
