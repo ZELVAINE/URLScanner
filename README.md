@@ -1,8 +1,8 @@
-# 🔐 PhishScope
+# 🔐 URLScanner
 
 **A simple, heuristic-based URL risk analyzer for Firefox.**
 
-PhishScope is a lightweight browser extension that checks the current
+URLScanner is a lightweight browser extension that checks the current
 tab's URL for common phishing-style patterns and explains why something
 might be suspicious.
 
@@ -13,7 +13,7 @@ unsafe" tool.
 
 ## Philosophy
 
--   **Heuristic, not absolute.** PhishScope looks for patterns, not
+-   **Heuristic, not absolute.** URLScanner looks for patterns, not
     certainty. It highlights risk indicators rather than making final
     decisions.
 -   **Transparent, not magic.** Every score is backed by clear
@@ -27,7 +27,7 @@ unsafe" tool.
 
 ## What does it do?
 
-PhishScope analyzes the current page URL and checks for things like:
+URLScanner analyzes the current page URL and checks for things like:
 
 -   Missing HTTPS
 -   Raw IP addresses instead of domain names
@@ -50,13 +50,13 @@ It then returns:
 
 ## Why this exists
 
-Most attacks don't rely on breaking systems --- they rely on tricking
+Most attacks don't rely on breaking systems, they rely on tricking
 people.
 
-PhishScope is a small tool focused on that layer:
+URLScanner is a small tool focused on that layer:
 
--   spotting suspicious links before clicking them\
--   helping explain *why* a link feels off\
+-   spotting suspicious links before clicking them
+-   helping explain *why* a link feels off
 -   building intuition around phishing patterns
 
 It's not meant to replace real security tools, just to support quick
@@ -68,7 +68,7 @@ judgement.
 
 -   Firefox extension popup UI
 -   URL analysis of the active tab
--   Heuristic scoring system (0--100)
+-   Heuristic scoring system (0-100)
 -   Clear breakdown of findings
 -   Simple visual risk indicator
 -   Works entirely locally (no external API calls)
@@ -115,14 +115,6 @@ Future improvements may include:
 -   customizable rules / thresholds\
 -   better domain analysis\
 -   improved scoring logic
-
----
-
-## Name
-
-PhishScope reflects the idea of inspecting links closely rather than
-blindly trusting them --- not blocking, not deciding, just **looking
-more carefully**.
 
 ---
 
