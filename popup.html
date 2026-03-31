@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PhishScope</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>PhishScope</h1>
+    <p class="subtitle">Checks the current page URL for suspicious patterns.</p>
+
+    <div class="card">
+      <h2>Current URL</h2>
+      <p id="url-text">Loading...</p>
+    </div>
+
+    <div class="card">
+      <h2>Risk Score</h2>
+      <div class="score-row">
+        <p id="risk-score">--</p>
+        <span id="risk-label" class="risk-label neutral">Checking...</span>
+      </div>
+      <div class="bar-background">
+        <div id="risk-bar" class="bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Findings</h2>
+      <ul id="findings-list">
+        <li>Loading results...</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Summary</h2>
+      <p id="summary-text">Trying to analyze the current page.</p>
+    </div>
+  </div>
+
+  <script src="analyzer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
