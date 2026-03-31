@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "PhishScope",
+  "name": "URLScanner",
   "version": "1.0",
   "description": "A simple Firefox extension that checks the current URL for suspicious phishing-related patterns.",
   "permissions": [
@@ -8,7 +8,7 @@
     "activeTab"
   ],
   "action": {
-    "default_title": "PhishScope",
+    "default_title": "URLScanner",
     "default_popup": "popup.html"
   },
   "icons": {
