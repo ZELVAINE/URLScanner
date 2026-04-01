@@ -1,124 +1,120 @@
-# 🔐 URLScanner
+# URLScanner
 
-**A simple, heuristic-based URL risk analyzer for Firefox.**
+**A heuristic URL risk analyser for Firefox.**
 
-URLScanner is a lightweight browser extension that checks the current
-tab's URL for common phishing-style patterns and explains why something
-might be suspicious.
+URLScanner checks the current tab's URL — and optionally every link on a page — for patterns associated with phishing, domain spoofing, and social engineering attacks. It gives you a score, a breakdown of findings, and optionally queries VirusTotal for live threat intelligence.
 
-It's designed to be a **quick second opinion**, not a black-box "safe or
-unsafe" tool.
+It's designed to be a **transparent second opinion**, not a black-box verdict.
 
 ---
 
 ## Philosophy
 
--   **Heuristic, not absolute.** URLScanner looks for patterns, not
-    certainty. It highlights risk indicators rather than making final
-    decisions.
--   **Transparent, not magic.** Every score is backed by clear
-    explanations. You can see *why* something was flagged.
--   **Simple, not overengineered.** The goal is to be understandable and
-    lightweight, not a full security suite.
--   **Educational, not just functional.** It should help you learn what
-    suspicious URLs look like over time.
+- **Heuristic, not absolute.** URLScanner looks for patterns and indicators, not certainty. It flags risk — it doesn't make final decisions.
+- **Transparent, not magic.** Every point added to the score has a reason. You can see exactly what was flagged and why.
+- **Layered, not single-source.** Local heuristics run first (no API needed), with optional external lookups for domain age and live threat intel.
+- **Educational.** The explanations are written to build intuition, not just report numbers.
 
 ---
 
-## What does it do?
+## What it checks
 
-URLScanner analyzes the current page URL and checks for things like:
+### Local heuristics (no API key required)
 
--   Missing HTTPS
--   Raw IP addresses instead of domain names
--   Misleading characters (like `@`)
--   Punycode / lookalike domains
--   Excessive subdomains
--   Very long URLs
--   Suspicious keywords (login, verify, secure, etc.)
--   URL shorteners
--   Unusual domain formatting
+| Check | What it looks for |
+|---|---|
+| Protocol | HTTP vs HTTPS |
+| Raw IP address | IPv4 in place of a domain name |
+| @ symbol | URL credential injection trick |
+| Punycode / IDN | `xn--` encoded lookalike domains |
+| Homoglyph characters | Non-Latin or full-width characters in the hostname |
+| Brand impersonation | Known brand names appearing in a URL that isn't that brand's domain |
+| High-risk TLD | `.tk`, `.ml`, `.xyz`, `.top` and others frequently used in phishing campaigns |
+| Domain entropy | Algorithmically generated, high-randomness domain names |
+| Subdomain depth | Excessive subdomain chaining to bury the real domain |
+| URL length | Abnormally long URLs used to hide destination or encode payloads |
+| Hyphen count | Hyphen-heavy domains imitating legitimate service names |
+| URL shorteners | Services that mask the real destination |
+| Suspicious keywords | Phishing-common words appearing in the domain name itself vs. the path (weighted differently) |
+| Double slashes in path | URL parser confusion tricks |
+| Data URIs | Inline content embedding used to host pages without a real server |
 
-It then returns:
+### External lookups (optional)
 
--   A **risk score (0-100)**
--   A **risk level (Low / Medium / High)**
--   A list of **specific findings**
--   A short **summary of what the score means**
+| Feature | Source | Key required? |
+|---|---|---|
+| Domain age | RDAP (ICANN open protocol) | No |
+| Live threat intel | VirusTotal | Yes (free tier: 4 req/min) |
 
----
-
-## Why this exists
-
-Most attacks don't rely on breaking systems, they rely on tricking
-people.
-
-URLScanner is a small tool focused on that layer:
-
--   spotting suspicious links before clicking them
--   helping explain *why* a link feels off
--   building intuition around phishing patterns
-
-It's not meant to replace real security tools, just to support quick
-judgement.
+Domain age is queried automatically via RDAP — no account needed. VirusTotal requires a free API key, which you can paste into the Settings tab.
 
 ---
 
-## Current Features
+## Scoring
 
--   Firefox extension popup UI
--   URL analysis of the active tab
--   Heuristic scoring system (0-100)
--   Clear breakdown of findings
--   Simple visual risk indicator
--   Works entirely locally (no external API calls)
+The risk score is 0–100, built by accumulating weighted points per finding:
+
+- **0–29**: Low risk
+- **30–64**: Medium risk — some indicators present, check carefully
+- **65+**: High risk — multiple phishing-associated patterns detected
+
+Findings that appear in the **domain name itself** are weighted more heavily than the same pattern in the URL path, since attackers have more control over the path.
+
+---
+
+## Features
+
+- **Current tab scan** — runs on popup open, heuristics first, external lookups in background
+- **Page link scanner** — analyses every external link on the page, sorted by risk score, click any entry to expand findings
+- **VirusTotal integration** — live engine flagging count + reputation score
+- **RDAP domain age** — newly registered domains flagged as high-risk indicator
+- **Settings panel** — paste and store your VT API key locally (browser storage, never transmitted except to VT directly)
 
 ---
 
 ## Limitations
 
-This is a small, heuristic-based project, and it has important limits:
+URLScanner is a heuristic tool and has real limits:
 
--   It does **not guarantee safety or danger**
--   It does **not check page content**, only the URL
--   It does **not use threat intelligence feeds or blacklists**
--   It may flag legitimate sites that happen to match patterns
--   It may miss more advanced or subtle phishing techniques
+- It does **not** guarantee safety or danger — a clean score is not a green light
+- It checks URLs, not page content — it won't detect malicious JavaScript or drive-by downloads
+- Heuristic checks can produce false positives on legitimate sites that happen to match patterns
+- VirusTotal data represents past analysis — a freshly deployed phishing page may not yet be flagged
 
-The goal is **awareness**, not full protection.
+The goal is **awareness and intuition**, not full protection.
 
 ---
 
 ## Setup
 
-1.  Clone or download this repository
-2.  Open Firefox
-3.  Go to `about:debugging`
-4.  Click **This Firefox**
-5.  Click **Load Temporary Add-on**
-6.  Select the `manifest.json` file
+1. Clone or download this repository
+2. Open Firefox and go to `about:debugging`
+3. Click **This Firefox**
+4. Click **Load Temporary Add-on**
+5. Select `manifest.json`
 
 Then open any website and click the extension icon.
+
+### VirusTotal (optional)
+
+1. Create a free account at [virustotal.com](https://www.virustotal.com)
+2. Go to your profile → API key
+3. Paste it into URLScanner's **Settings** tab
 
 ---
 
 ## Status
 
-🟡 Early project.
+🟡 Active development. v2.0.
 
-This was built as a small cybersecurity-focused project to explore
-phishing detection concepts and browser extension development.
-
-Future improvements may include:
-
--   scanning all links on a page\
--   customizable rules / thresholds\
--   better domain analysis\
--   improved scoring logic
+**Planned:**
+- Customisable scoring thresholds
+- Allowlist / blocklist
+- Export findings as JSON
+- Passive mode (background scanning of visited URLs)
 
 ---
 
 ## Notes
 
-This is a learning project. The goal is understanding patterns, not
-pretending to solve phishing completely.
+This is a learning project built to explore phishing detection concepts, browser extension architecture, and threat intelligence integration. It does not aim to replace dedicated security tools.

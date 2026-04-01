@@ -1,44 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>URLScanner</title>
-  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>URLScanner</h1>
-    <p class="subtitle">Checks the current page URL for suspicious patterns.</p>
 
-    <div class="card">
-      <h2>Current URL</h2>
-      <p id="url-text">Loading...</p>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">URLScanner</span>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" data-view="scan">Scan</button>
+      <button class="nav-btn" data-view="links">Page Links</button>
+      <button class="nav-btn" data-view="settings">Settings</button>
+    </nav>
+  </header>
+
+  <!-- ── VIEW: SCAN ─────────────────────────────────────────────────────────── -->
+  <div class="view" id="view-scan">
+
+    <!-- URL bar -->
+    <div class="url-bar">
+      <span class="url-label">URL</span>
+      <span class="url-display" id="url-display">Loading…</span>
     </div>
 
-    <div class="card">
-      <h2>Risk Score</h2>
-      <div class="score-row">
-        <p id="risk-score">--</p>
-        <span id="risk-label" class="risk-label neutral">Checking...</span>
+    <!-- Risk gauge -->
+    <div class="risk-panel">
+      <div class="risk-left">
+        <div class="score-number low" id="score-value">—</div>
+        <div class="score-caption">/ 100</div>
       </div>
-      <div class="bar-background">
-        <div id="risk-bar" class="bar-fill"></div>
+      <div class="risk-right">
+        <div class="risk-label low" id="risk-label">Analysing…</div>
+        <div class="gauge-track">
+          <div class="gauge-fill low" id="gauge-fill" style="width: 0%"></div>
+        </div>
+        <p class="summary-text" id="summary-text"></p>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Findings</h2>
-      <ul id="findings-list">
-        <li>Loading results...</li>
-      </ul>
+    <!-- External lookup results -->
+    <div class="external-section hidden" id="external-section">
+      <div class="external-row" id="whois-status">Checking domain age…</div>
+      <div class="external-row" id="vt-status"></div>
     </div>
 
-    <div class="card">
-      <h2>Summary</h2>
-      <p id="summary-text">Trying to analyze the current page.</p>
+    <!-- Findings -->
+    <div class="section-label">Findings</div>
+    <div class="findings-list" id="findings-list">
+      <div class="finding-item info">
+        <div class="finding-header">
+          <span class="finding-icon">⏳</span>
+          <span class="finding-title">Analysing…</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── VIEW: PAGE LINKS ───────────────────────────────────────────────────── -->
+  <div class="view hidden" id="view-links">
+    <div class="section-label">Links on this page</div>
+    <div class="links-container" id="links-container">
+      <p class="loading-text">Switch to this tab to load link scan.</p>
     </div>
   </div>
 
+  <!-- ── VIEW: SETTINGS ────────────────────────────────────────────────────── -->
+  <div class="view hidden" id="view-settings">
+    <div class="settings-section">
+      <div class="settings-title">VirusTotal API Key</div>
+      <p class="settings-desc">
+        URLScanner can query VirusTotal for live threat intelligence data.
+        Get a free API key at <strong>virustotal.com</strong> — the free tier allows 4 lookups/minute.
+      </p>
+      <div class="key-input-row">
+        <input type="password" id="vt-key-input" class="key-input" placeholder="Paste your VT API key…" autocomplete="off" />
+      </div>
+      <div class="key-actions">
+        <button class="btn-save" id="save-key-btn">Save key</button>
+        <button class="btn-clear" id="clear-key-btn">Clear</button>
+      </div>
+      <div class="key-status neutral" id="key-status">No API key saved.</div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-title">About</div>
+      <p class="settings-desc">
+        URLScanner v2.0 · Heuristic-based phishing detection.<br/>
+        Checks for: protocol, IP addresses, punycode, homoglyphs, brand impersonation,
+        suspicious TLDs, domain entropy, subdomain depth, URL length, shorteners, keywords.<br/><br/>
+        Domain age via RDAP · Threat intel via VirusTotal (optional).
+      </p>
+    </div>
+  </div>
+
+  <script src="settings.js"></script>
   <script src="analyzer.js"></script>
   <script src="popup.js"></script>
 </body>
