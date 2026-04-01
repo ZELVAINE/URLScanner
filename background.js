@@ -71,12 +71,15 @@ async function submitUrlToVt(url, apiKey) {
 }
 
 async function handleWhoisLookup(domain) {
-  // Use the free whois.freeaiapi.com endpoint — no key needed
-  const res = await fetch(`https://api.whoisfreaks.com/v1.0/whois?whois=live&domainName=${encodeURIComponent(domain)}&apiKey=free`);
 
-  // Fallback: use rdap (ICANN's open protocol, no key needed)
+  // Use rdap (ICANN's open protocol, no key needed)
   // rdap is the modern replacement for whois and has a public HTTPS API
-  const rdapRes = await fetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`);
+  // Strip to registrable domain only (e.g. google.com not www.google.com)
+  const parts = domain.split(".");
+  const registrable = parts.slice(-2).join(".");
+  const rdapRes = await fetch(`https://rdap.org/domain/${encodeURIComponent(registrable)}`, {
+    redirect: "follow"
+  });
 
   if (!rdapRes.ok) {
     return { available: false, age: null, message: "Domain age lookup unavailable." };
