@@ -8,6 +8,12 @@ It's designed to be a **transparent second opinion**, not a black-box verdict.
 
 ---
 
+## Status
+
+🟡 Mid-late stage development, testing and bug fixing.
+
+---
+
 ## Philosophy
 
 - **Heuristic, not absolute.** URLScanner looks for patterns and indicators, not certainty. It flags risk, it doesn't make final decisions.
@@ -102,10 +108,6 @@ Then open any website and click the extension icon.
 3. Paste it into URLScanner's **Settings** tab
 
 ---
-
-## Status
-
-🟡 Active development. v2.0.
 
 **Planned:**
 - Customisable scoring thresholds
